@@ -13,6 +13,8 @@
 
 이 두 가지 방식으로 인해 java 9 부터 deprecated 되었다.
 
+기본적으로 response 를 제공하는 Observable, request 하는 Observer 로 나뉘어져 있다.
+
 ## Pub - Sub Pattern
 
 
