@@ -25,15 +25,24 @@ public class ObserverTest {
 	}
 
 	@Test
+	@SuppressWarnings({"deprecation", "unchecked"})
 	void observerTest() {
-		List<Integer> observerIntegers = new ArrayList<>();
+		List<Integer> observerIntegers1 = new ArrayList<>();
+		List<Integer> observerIntegers2 = new ArrayList<>();
+
 		JKObservable jkObservable = new JKObservable();
 
 		// 로직 정의
-		Observer integerObserver = (o, arg) ->
-				observerIntegers.addAll(
-						((JKObservable) o).getIntegers()
-				);
+		Observer integerObserver = (o, arg) -> {
+			// Observable Object 내에 integerCollection 존재하기 때문에 Observeable 에서 가져오거나
+			observerIntegers1.addAll(
+					((JKObservable) o).getIntegers()
+			);
+
+			// notify 에 collection 등록했기에 arg 를 통해 직접 가져올 수 있다.
+			observerIntegers2.addAll((Collection<? extends Integer>) arg);
+		};
+
 
 		// event 등록
 		jkObservable.addObserver(integerObserver);
@@ -41,7 +50,8 @@ public class ObserverTest {
 		jkObservable.setIntegers(10);
 
 		for (int i = 0; i < 10; i++) {
-			Assertions.assertEquals(observerIntegers.get(i), integers.get(i));
+			Assertions.assertEquals(observerIntegers1.get(i), integers.get(i));
+			Assertions.assertEquals(observerIntegers2.get(i), integers.get(i));
 		}
 	}
 }
