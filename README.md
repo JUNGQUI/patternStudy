@@ -15,8 +15,138 @@
 
 기본적으로 response 를 제공하는 Observable, request 하는 Observer 로 나뉘어져 있다.
 
+코드로 설명하자면 아래와 같다.
+
+```java
+public class JKObservable extends Observable {
+  // observable 내에 property 를 정의 할 수도 있다.
+  private List<Integer> integers;
+
+  public JKObservable () {
+    this.integers = new ArrayList<>();
+  }
+
+  public void setIntegers(int i) {
+    for (int a = 0; a < i; a++) {
+      this.integers.add(a);
+    }
+
+    // 변경이 되었다는 것을 Observable 에게 알림
+    setChanged();
+    // 값을 알려준다. 이 때 Observer 내에 IntegerCollection 이 있기에 접근 가능
+    // notifyObservers();
+    // 아니면 arg 로 바로 전달도 가능하다.
+    notifyObservers(this.integers);
+  }
+}
+
+
+public class JKObserver {
+  public Observer JKObserverFunction() {
+    return new Observer() {
+      @Override
+      public void update(Observable o, Object arg) {
+        // 비즈니스 로직에 대해 정의
+        // Observable Object 내에 integerCollection 존재하기 때문에 Observable 에서 가져오거나
+        observerIntegers1.addAll(
+            ((JKObservable) o).getIntegers()
+        );
+
+        // notify 에 collection 등록했기에 arg 를 통해 직접 가져올 수 있다.
+        observerIntegers2.addAll((Collection<? extends Integer>) arg);
+      }
+    };
+  }
+  
+  public void doSomething() {
+    // ...
+    // observable 생성 후 event 등록
+    JKObservable jkObservable = new JKObservable();
+    jkObservable.addObserver(integerObserver);
+    // 실행, setIntegers 안에 setChanged(), notifyObservers() 정의되어 있음
+    jkObservable.setIntegers(10);
+    // ...
+  }
+}
+```
+
+핵심적인 부분은 Observable 을 통해 request 에 대한 로직을 수행하는 부분을 만들고 response 를 등록된 Observer 에 전달해준다.
+
 ## Pub - Sub Pattern
 
+Observer pattern 과 대동소이 하지만 가장 큰 차이점이 있다.
+
+- 실패 시 핸들링 불가능
+- client 상태와 별도로 무작정 보내는 server
+
+앞서 observer pattern 설명 시 언급했던 observer pattern 의 한계인데, 
+이 부분을 보완한게 publisher - subscriber pattern 이다.
+
+```java
+import java.util.ArrayList;
+
+public class pubsub {
+
+  public void pubsubMain() {
+    List<Integer> integerList = new ArrayList<>();
+    integerPublisher().subscribe(integerSubscriber(10, integerList));
+  }
+
+  private Publisher<Integer> integerPublisher() {
+    return subscriber -> subscriber.onSubscribe(
+        new Subscription() {
+          @Override
+          public void request(long n) {
+            int i = 0;
+
+            while (i < n) {
+              subscriber.onNext(i);
+              i++;
+            }
+
+            subscriber.onComplete();
+          }
+
+          @Override
+          public void cancel() {
+            subscriber.onComplete();
+          }
+        });
+  }
+
+  private Subscriber<Integer> integerSubscriber(long i, List<Integer> result) {
+    return new Subscriber<Integer>() {
+      @Override
+      public void onSubscribe(Subscription s) {
+        s.request(i);
+      }
+
+      @Override
+      public void onNext(Integer integer) {
+        result.add(integer);
+        System.out.println("onNext : " + integer);
+      }
+
+      @Override
+      public void onError(Throwable t) {
+        System.out.println("onError : " + t.getMessage());
+      }
+
+      @Override
+      public void onComplete() {
+        System.out.println("onComplete");
+      }
+    };
+  }
+}
+```
+
+코드를 보면 Observable = Publisher / Observer = Subscriber 라고 볼 수 있기에 비슷하여 그대로 읽으면 문제는 없다.
+다만 위의 두 가지 이슈를 커버하기 위해 생겨난 부분이
+
+client 의 상황에 맞게 조절하기 위해 publisher 내의 request 가 있다. 이를 통해 값의 조절을 subscriber 측에서 조정이 가능하다.
+
+error handling 을 위해 onError 와 cancel 이 있고 두 가지를 조합해 subscriber 시 cancel 로 publisher 에 중지 및 진행도 기억이 가능하다.
 
 ## Proxy Pattern
 

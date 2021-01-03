@@ -34,7 +34,7 @@ public class ObserverTest {
 
 		// 로직 정의
 		Observer integerObserver = (o, arg) -> {
-			// Observable Object 내에 integerCollection 존재하기 때문에 Observeable 에서 가져오거나
+			// Observable Object 내에 integerCollection 존재하기 때문에 Observable 에서 가져오거나
 			observerIntegers1.addAll(
 					((JKObservable) o).getIntegers()
 			);
