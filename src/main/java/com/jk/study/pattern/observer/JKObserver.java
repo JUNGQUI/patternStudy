@@ -2,6 +2,7 @@ package com.jk.study.pattern.observer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 import java.util.Observer;
 
 public class JKObserver {

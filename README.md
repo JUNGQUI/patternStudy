@@ -15,6 +15,12 @@
 
 기본적으로 response 를 제공하는 Observable, request 하는 Observer 로 나뉘어져 있다.
 
+코드로 설명하자면 아래와 같다.
+
+```java
+
+```
+
 ## Pub - Sub Pattern
 
 
