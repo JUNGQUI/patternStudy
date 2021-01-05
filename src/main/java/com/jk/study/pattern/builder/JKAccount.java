@@ -23,6 +23,7 @@ public class JKAccount {
   private LocalDateTime createdDate;
   private LocalDateTime updatedDate;
 
+  // method 재정의 후 필수 값에 대한 exception 구현
   public static JKAccountBuilder builder(
       String id,
       String password) {
