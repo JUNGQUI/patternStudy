@@ -10,10 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 class StrategyTest {
 
 	@Autowired @Qualifier("firstBeanStrategy")
-	BeanStrategyInterface firstBeanStrategyInterface;
+	private BeanStrategyInterface firstBeanStrategyInterface;
 
 	@Autowired @Qualifier("secondBeanStrategy")
-	BeanStrategyInterface secondBeanStrategyInterface;
+	private BeanStrategyInterface secondBeanStrategyInterface;
 
 	@Test
 	void StrategyClassTest() {

@@ -6,6 +6,7 @@ import java.util.Observable;
 import lombok.Getter;
 
 @Getter
+@SuppressWarnings("deprecation")
 public class JKObservable extends Observable {
 	private List<Integer> integers;
 
