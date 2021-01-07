@@ -2,6 +2,7 @@ package com.jk.study.pattern.observer;
 
 import java.util.Observable;
 
+@SuppressWarnings("deprecation")
 public class JKObservableWithRunnable extends Observable implements Runnable {
 
 	@Override public void run() {
