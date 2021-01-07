@@ -8,7 +8,7 @@ public class JKStringProxy implements JKStringInterface {
 	}
 
 	@Override public String returnString() {
-		System.out.println();
+		System.out.println("Proxy Pattern On");
 		return jkString.returnString();
 	}
 }
