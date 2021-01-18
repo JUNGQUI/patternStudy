@@ -29,4 +29,19 @@ public class JavaLogicTest {
     Assertions.assertEquals(duration2, duration3);
     Assertions.assertNotEquals(duration2, duration3.plusMinutes(30));
   }
+
+  @Test
+  void side_effect_test() {
+    // side-effect 는 colletion 같은 구조만 가능
+    Duration min30 = Duration.ofMinutes(30);
+    Duration min60 = Duration.ofMinutes(60);
+    Duration min90 = Duration.ofMinutes(90);
+    Duration min90ByPlus = sumDuration(min30, min60);
+
+    Assertions.assertEquals(min90, min90ByPlus);
+  }
+
+  private Duration sumDuration(Duration a, Duration b) {
+    return a.plus(b);
+  }
 }
