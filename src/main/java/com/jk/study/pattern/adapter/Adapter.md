@@ -12,6 +12,8 @@
 
 여기서 콘센트는 각자 다른 object 라고 볼 수 있고, 충전기는 그 각자 다른 object 를 각 adaptor 에 return 해주는 값으로 변환해주는 것이라고 생각하면 된다.
 
+
+
 ```java
 import lombok.Data;
 
