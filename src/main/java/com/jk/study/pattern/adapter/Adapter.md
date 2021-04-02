@@ -27,3 +27,32 @@ public class AdaptorObject {
   private String code;
 }
 ```
+
+```java
+import lombok.Data;
+
+@Entity
+public class AdaptorServerRequest {
+
+  private String id;
+  private String nameWithCode;
+}
+```
+
+위와 같은 형태의 class 가 있다고 가정하자.
+
+`AdaptorObject` 는 서버 내에서 사용하는 클래스, `ServerRequest` 는 외부에서 유입되는 request 라고 가정하면 두 가지를 호환되게 사용하기 위해
+converter 가 필요하다.
+
+> nameWithCode 의 경우 delimiter 로 '|' 를 가진다고 가정하자.
+
+```java
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
+public class converter {
+  public AdaptorObject convert(AdaptorServerRequest adaptorServerRequest) {
+    return 
+  }
+}
+```
