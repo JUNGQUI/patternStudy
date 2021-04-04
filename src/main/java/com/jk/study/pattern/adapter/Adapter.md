@@ -12,47 +12,23 @@
 
 여기서 콘센트는 각자 다른 object 라고 볼 수 있고, 충전기는 그 각자 다른 object 를 각 adaptor 에 return 해주는 값으로 변환해주는 것이라고 생각하면 된다.
 
-
-
 ```java
-import lombok.Data;
+public interface Animal {
+	public void acting();
+    public void shouting();
+}
 
-@Data
-@Entity
-public class AdaptorObject {
+public class Dog {
+	private String act = "Bark";
+	private String sound = "Bark";
+}
 
-  private String id;
-  private String name;
-
-  private String code;
+public class DogActing implements Animal {
+	public String acting(String act) {
+		return act;
+    }
 }
 ```
 
-```java
-import lombok.Data;
+이러한 인터페이스가 있다고 가정하자. 
 
-@Entity
-public class AdaptorServerRequest {
-
-  private String id;
-  private String nameWithCode;
-}
-```
-
-위와 같은 형태의 class 가 있다고 가정하자.
-
-`AdaptorObject` 는 서버 내에서 사용하는 클래스, `ServerRequest` 는 외부에서 유입되는 request 라고 가정하면 두 가지를 호환되게 사용하기 위해
-converter 가 필요하다.
-
-> nameWithCode 의 경우 delimiter 로 '|' 를 가진다고 가정하자.
-
-```java
-import lombok.experimental.UtilityClass;
-
-@UtilityClass
-public class converter {
-  public AdaptorObject convert(AdaptorServerRequest adaptorServerRequest) {
-    return 
-  }
-}
-```

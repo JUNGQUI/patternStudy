@@ -24,4 +24,12 @@ public class RegexPattern {
 		Assertions.assertFalse(numberRegex.matcher("not passed").find());
 		Assertions.assertTrue(numberRegex.matcher("pass, because of 1").find());
 	}
+
+	@Test
+	void containsTest() {
+		String object = "development";
+		String containsObject = "[development]";
+
+		Assertions.assertTrue(containsObject.contains(object));
+	}
 }
