@@ -13,22 +13,72 @@
 여기서 콘센트는 각자 다른 object 라고 볼 수 있고, 충전기는 그 각자 다른 object 를 각 adapter 에 return 해주는 값으로 변환해주는 것이라고 생각하면 된다.
 
 ```java
-public interface Animal {
-	public void acting();
-    public void shouting();
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+public interface AnimalDoing {
+
+  public void acting();
+
+  public void shouting();
 }
 
-public class Dog {
-	private String act = "Bark";
-	private String sound = "Bark";
-}
+public class DogActing implements AnimalDoing {
 
-public class DogActing implements Animal {
-	public String acting(String act) {
-		return act;
-    }
+  @Override
+  public void acting() {
+    System.out.println("Bite");
+  }
+
+  @Override
+  public void shouting() {
+    System.out.println("Bark");
+  }
 }
 ```
 
 이러한 인터페이스가 있다고 가정하자. 
 
+그리고, 이런 인터페이스도 있다고 가정해보자.
+
+```java
+public interface InsectActing {
+  public void actingInsect();
+}
+
+public class InsectActingClass implements InsectActing {
+  
+  @Override
+  public void actingInsect() {
+    System.out.println("DO SOMETHING");
+  }
+}
+```
+
+곤충의 경우 소리를 내는게 없다고 가정하고, 이러한 환경을 반영해 InsectActing 인터페이스에는 해당 행동이 존재하지 않는다. 그런데, AnimalActing, InsectActing 이 제법 유사하다.
+
+이럴 때 adapter 를 사용 할 수 있다.
+
+```java
+public class InsectAdapter implements AnimalActing {
+  private InsectActing insectActing;
+  
+  public InsectAdapter(InsectActing insectActing) {
+    this.insectActing = insectActing;
+  }
+
+  @Override
+  public void acting() {
+    insectActing.actingInsect();
+  }
+
+  @Override
+  public void shouting() {
+    // InsectActing 에 shouting 은 없기에 이렇게 표현
+    // 비즈니스 로직에 따라 예외처리 등을 통해 변환
+    System.out.println("");
+  }
+}
+```
+
+이렇게 사용 할 경우 AnimalActing 만을 가지고 DogActing, InsectActing 에 대한 사용 및 표현이 가능하다.
